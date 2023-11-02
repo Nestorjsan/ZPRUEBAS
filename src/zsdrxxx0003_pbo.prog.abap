@@ -4,53 +4,55 @@
 
 *&SPWIZARD: OUTPUT MODULE FOR TC 'TC_DETPRO'. DO NOT CHANGE THIS LINE!
 *&SPWIZARD: UPDATE LINES FOR EQUIVALENT SCROLLBAR
-MODULE TC_DETPRO_CHANGE_TC_ATTR OUTPUT.
-  DESCRIBE TABLE G_TI_DETALLE LINES TC_DETPRO-lines.
+MODULE tc_detpro_change_tc_attr OUTPUT.
+  DESCRIBE TABLE g_ti_detalle LINES tc_detpro-lines.
 ENDMODULE.
 
 *&SPWIZARD: OUTPUT MODULE FOR TC 'TC_DETPRO'. DO NOT CHANGE THIS LINE!
 *&SPWIZARD: GET LINES OF TABLECONTROL
-MODULE TC_DETPRO_GET_LINES OUTPUT.
-  G_TC_DETPRO_LINES = SY-LOOPC.
+MODULE tc_detpro_get_lines OUTPUT.
+  g_tc_detpro_lines = sy-loopc.
 ENDMODULE.
 
 *&SPWIZARD: INPUT MODULE FOR TC 'TC_DETPRO'. DO NOT CHANGE THIS LINE!
 *&SPWIZARD: MODIFY TABLE
-MODULE TC_DETPRO_MODIFY INPUT.
-  MODIFY G_TI_DETALLE
-    FROM G_ES_DETALLE
-    INDEX TC_DETPRO-CURRENT_LINE.
+MODULE tc_detpro_modify INPUT.
+  MODIFY g_ti_detalle
+    FROM g_es_detalle
+    INDEX tc_detpro-current_line.
 ENDMODULE.
 
 *&SPWIZARD: INPUT MODUL FOR TC 'TC_DETPRO'. DO NOT CHANGE THIS LINE!
 *&SPWIZARD: MARK TABLE
-MODULE TC_DETPRO_MARK INPUT.
-  DATA: g_TC_DETPRO_wa2 like line of G_TI_DETALLE.
-    if TC_DETPRO-line_sel_mode = 1
-    and G_ES_DETALLE-MARK = 'X'.
-     loop at G_TI_DETALLE into g_TC_DETPRO_wa2
-       where MARK = 'X'.
-       g_TC_DETPRO_wa2-MARK = ''.
-       modify G_TI_DETALLE
-         from g_TC_DETPRO_wa2
-         transporting MARK.
-     endloop.
-  endif.
-  MODIFY G_TI_DETALLE
-    FROM G_ES_DETALLE
-    INDEX TC_DETPRO-CURRENT_LINE
-    TRANSPORTING MARK.
+MODULE tc_detpro_mark INPUT.
+  DATA: g_tc_detpro_wa2 LIKE LINE OF g_ti_detalle.
+  IF tc_detpro-line_sel_mode = 1
+  AND g_es_detalle-mark = 'X'.
+    LOOP AT g_ti_detalle INTO g_tc_detpro_wa2
+      WHERE mark = 'X'.
+      g_tc_detpro_wa2-mark = ''.
+      MODIFY g_ti_detalle
+        FROM g_tc_detpro_wa2
+        TRANSPORTING mark.
+    ENDLOOP.
+  ENDIF.
+  MODIFY g_ti_detalle
+    FROM g_es_detalle
+    INDEX tc_detpro-current_line
+    TRANSPORTING mark.
+  CALL METHOD g_o_actualizar->del_data. "Borra registros de la tabla ZTSD0002
 ENDMODULE.
 
 *&SPWIZARD: INPUT MODULE FOR TC 'TC_DETPRO'. DO NOT CHANGE THIS LINE!
 *&SPWIZARD: PROCESS USER COMMAND
-MODULE TC_DETPRO_USER_COMMAND INPUT.
-  OK_CODE = SY-UCOMM.
-  PERFORM USER_OK_TC USING    'TC_DETPRO'
+MODULE tc_detpro_user_command INPUT.
+  ok_code = sy-ucomm.
+  PERFORM user_ok_tc USING    'TC_DETPRO'
                               'G_TI_DETALLE'
                               'MARK'
-                     CHANGING OK_CODE.
-  SY-UCOMM = OK_CODE.
+                     CHANGING ok_code.
+  sy-ucomm = ok_code.
+  CALL METHOD g_o_actualizar->adi_data. "Actualiza la tabla ZTSD0002
 ENDMODULE.
 *&---------------------------------------------------------------------*
 *& Module STATUS_0110 OUTPUT
@@ -58,6 +60,6 @@ ENDMODULE.
 *&
 *&---------------------------------------------------------------------*
 MODULE status_0110 OUTPUT.
- SET PF-STATUS 'GS_STATUS110'.
- SET TITLEBAR 'Factura Clientes'.
+  SET PF-STATUS 'GS_STATUS110'.
+  SET TITLEBAR 'Factura Clientes'.
 ENDMODULE.

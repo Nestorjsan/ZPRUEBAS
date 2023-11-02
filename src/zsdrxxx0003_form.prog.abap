@@ -32,7 +32,10 @@
      WHEN 'INSR'.                      "insert row
        PERFORM fcode_insert_row USING    p_tc_name
                                          p_table_name.
+
+       "CALL METHOD g_o_actualizar->adi_data. "Actualiza la tabla ZTSD0002
        CLEAR p_ok.
+
 
      WHEN 'DELE'.                      "delete row
        PERFORM fcode_delete_row USING    p_tc_name

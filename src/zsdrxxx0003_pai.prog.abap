@@ -4,6 +4,10 @@
 
 
  MODULE consultar_datos_cliente INPUT.
+
+
+   CREATE OBJECT g_o_actualizar.
+
    IF g_es_ztsd0001-zcedula IS NOT INITIAL.
      SELECT  zcedula       "Cedula del cliente
              znombre       "Nombre del cliente
@@ -14,44 +18,51 @@
             INTO TABLE g_ti_ztsd0001
           FROM ztsd0001
           WHERE zcedula EQ g_es_ztsd0001-zcedula.
+     IF sy-subrc EQ 0.
 
-     READ TABLE g_ti_ztsd0001 INTO g_es_ztsd0001 INDEX 1.
+       READ TABLE g_ti_ztsd0001 INTO g_es_ztsd0001 INDEX 1.
 
-     IF g_ti_ztsd0001 IS NOT INITIAL.
-       "Buscamos el departamento
-       SELECT zdepto zciudad zdescri
-          FROM ztsd0003
-          INTO TABLE g_ti_ztsd0003
-          FOR ALL ENTRIES IN g_ti_ztsd0001
-          WHERE zdepto  EQ g_ti_ztsd0001-zdepto
-              AND zciudad EQ '00'.
+       IF g_ti_ztsd0001 IS NOT INITIAL.
+         "Buscamos el departamento
+         SELECT zdepto zciudad zdescri
+            FROM ztsd0003
+            INTO TABLE g_ti_ztsd0003
+            FOR ALL ENTRIES IN g_ti_ztsd0001
+            WHERE zdepto  EQ g_ti_ztsd0001-zdepto
+                AND zciudad EQ '00'.
 
-       READ TABLE g_ti_ztsd0003 INTO g_es_ztsd0003 INDEX 1.
-       zdesdepto = g_es_ztsd0003-zdescri.
+         READ TABLE g_ti_ztsd0003 INTO g_es_ztsd0003 INDEX 1.
+         zdesdepto = g_es_ztsd0003-zdescri.
 
-       "Buscamos la ciudad
-       SELECT zdepto zciudad zdescri
-          FROM ztsd0003
-          INTO TABLE g_ti_ztsdciudad
-          FOR ALL ENTRIES IN g_ti_ztsd0001
-          WHERE zdepto EQ g_ti_ztsd0001-zdepto
-           AND zciudad EQ g_ti_ztsd0001-zciudad.
+         "Buscamos la ciudad
+         SELECT zdepto zciudad zdescri
+            FROM ztsd0003
+            INTO TABLE g_ti_ztsdciudad
+            FOR ALL ENTRIES IN g_ti_ztsd0001
+            WHERE zdepto EQ g_ti_ztsd0001-zdepto
+             AND zciudad EQ g_ti_ztsd0001-zciudad.
 
-       READ TABLE g_ti_ztsdciudad INTO g_es_ztsdciudad INDEX 1.
-       zdciudad = g_es_ztsdciudad-zdescri.
+         READ TABLE g_ti_ztsdciudad INTO g_es_ztsdciudad INDEX 1.
+         zdciudad = g_es_ztsdciudad-zdescri.
 
-       "Consultar saldo del cliente
-       SELECT zcedula zsaldo
-          FROM ztsd0005
-          INTO TABLE g_ti_ztsd0005
-          FOR ALL ENTRIES IN g_ti_ztsd0001
-          WHERE zcedula EQ g_ti_ztsd0001-zcedula.
+         "Consultar saldo del cliente
+         SELECT zcedula zfecha zsaldo
+            FROM ztsd0005
+            INTO TABLE g_ti_ztsd0005
+            FOR ALL ENTRIES IN g_ti_ztsd0001
+            WHERE zcedula EQ g_ti_ztsd0001-zcedula.
 
-       READ TABLE g_ti_ztsd0005 INTO g_es_ztsd0005 INDEX 1.
-       g_e_saldo = g_es_ztsd0005-zsaldo.
+         READ TABLE g_ti_ztsd0005 INTO g_es_ztsd0005 INDEX 1.
+         g_e_saldo = g_es_ztsd0005-zsaldo.
 
-
+       ENDIF.
+     ELSE.
+       MESSAGE TEXT-mne TYPE TEXT-00i.
+       LEAVE TO SCREEN 0.
      ENDIF.
+   ELSE.
+     MESSAGE TEXT-mce TYPE TEXT-00i.
+     CALL SCREEN 0110.
    ENDIF.
  ENDMODULE.
 *&---------------------------------------------------------------------*
@@ -94,6 +105,7 @@
        LEAVE TO SCREEN 0.
      WHEN 'EXIT'.
        LEAVE PROGRAM.
+       "LEAVE TO TRANSACTION 'ZSD04O'.
      WHEN 'CANCEL'.
        LEAVE TO SCREEN 0.
      WHEN '&MODIFICAR'.
@@ -102,4 +114,32 @@
      WHEN OTHERS.
    ENDCASE.
 
+ ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  CONSULTAR_REGIS_DETALLE  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+ MODULE consultar_regis_detalle INPUT.
+   IF g_es_ztsd0001-zcedula IS NOT INITIAL.
+     SELECT
+        zcodpro         "Codigo del producto
+        zdescri         "Descripción del producto
+        zcantidad       "Cantidad
+        zvalor          "Valor
+        ztotal          "Total
+       FROM ztsd0002
+       INTO TABLE g_ti_detalle
+       WHERE zfactura EQ  g_es_ztsd0001-zfactura
+        AND zcedula EQ g_es_ztsd0001-zcedula.
+
+     LOOP AT g_ti_detalle INTO g_es_detalle.
+       "g_e_total = g_e_total + g_es_detalle-ztotal.
+     ENDLOOP.
+     g_ti_detalle_cop[] = g_ti_detalle[].
+   ELSE.
+     MESSAGE TEXT-mce TYPE TEXT-00i.
+     CLEAR g_o_actualizar.
+     CALL SCREEN 0110.
+   ENDIF.
  ENDMODULE.

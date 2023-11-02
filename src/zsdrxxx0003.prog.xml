@@ -77,7 +77,7 @@
       <TYPE>N</TYPE>
       <NEXTSCREEN>0110</NEXTSCREEN>
       <LINES>027</LINES>
-      <COLUMNS>126</COLUMNS>
+      <COLUMNS>129</COLUMNS>
      </HEADER>
      <CONTAINERS>
       <RPY_DYCATT>
@@ -176,7 +176,7 @@
        <CONT_NAME>SCREEN</CONT_NAME>
        <TYPE>TEMPLATE</TYPE>
        <NAME>G_ES_ZTSD0001-ZCEDULA</NAME>
-       <TEXT>___________</TEXT>
+       <TEXT>?__________</TEXT>
        <LINE>003</LINE>
        <COLUMN>014</COLUMN>
        <LENGTH>011</LENGTH>
@@ -185,6 +185,7 @@
        <FORMAT>CHAR</FORMAT>
        <INPUT_FLD>X</INPUT_FLD>
        <OUTPUT_FLD>X</OUTPUT_FLD>
+       <REQU_ENTRY>O</REQU_ENTRY>
       </RPY_DYFATC>
       <RPY_DYFATC>
        <CONT_TYPE>SCREEN</CONT_TYPE>
@@ -285,14 +286,14 @@
        <CONT_TYPE>SCREEN</CONT_TYPE>
        <CONT_NAME>SCREEN</CONT_NAME>
        <TYPE>TEMPLATE</TYPE>
-       <NAME>ZFACTURA</NAME>
+       <NAME>G_ES_ZTSD0001-ZFACTURA</NAME>
        <TEXT>___________</TEXT>
        <LINE>006</LINE>
        <COLUMN>008</COLUMN>
        <LENGTH>011</LENGTH>
        <VISLENGTH>011</VISLENGTH>
        <HEIGHT>001</HEIGHT>
-       <FORMAT>CHAR</FORMAT>
+       <FORMAT>NUMC</FORMAT>
        <INPUT_FLD>X</INPUT_FLD>
        <OUTPUT_FLD>X</OUTPUT_FLD>
       </RPY_DYFATC>
@@ -365,6 +366,35 @@
        <COLUMN>081</COLUMN>
        <LENGTH>021</LENGTH>
        <VISLENGTH>021</VISLENGTH>
+       <HEIGHT>001</HEIGHT>
+       <FORMAT>DEC</FORMAT>
+       <OUTPUT_FLD>X</OUTPUT_FLD>
+       <REQU_ENTRY>N</REQU_ENTRY>
+      </RPY_DYFATC>
+      <RPY_DYFATC>
+       <CONT_TYPE>SCREEN</CONT_TYPE>
+       <CONT_NAME>SCREEN</CONT_NAME>
+       <TYPE>TEXT</TYPE>
+       <NAME>%#AUTOTEXT010</NAME>
+       <TEXT>Total</TEXT>
+       <LINE>020</LINE>
+       <COLUMN>069</COLUMN>
+       <LENGTH>005</LENGTH>
+       <VISLENGTH>005</VISLENGTH>
+       <HEIGHT>001</HEIGHT>
+       <FORMAT>CHAR</FORMAT>
+       <REQU_ENTRY>N</REQU_ENTRY>
+      </RPY_DYFATC>
+      <RPY_DYFATC>
+       <CONT_TYPE>SCREEN</CONT_TYPE>
+       <CONT_NAME>SCREEN</CONT_NAME>
+       <TYPE>TEMPLATE</TYPE>
+       <NAME>G_E_TOTAL</NAME>
+       <TEXT>______________________</TEXT>
+       <LINE>020</LINE>
+       <COLUMN>081</COLUMN>
+       <LENGTH>022</LENGTH>
+       <VISLENGTH>022</VISLENGTH>
        <HEIGHT>001</HEIGHT>
        <FORMAT>DEC</FORMAT>
        <OUTPUT_FLD>X</OUTPUT_FLD>
@@ -696,6 +726,7 @@
       <RPY_DYFLOW>
        <LINE>*&amp;SPWIZARD: MODULE TC_DETPRO_CHANGE_COL_ATTR.</LINE>
       </RPY_DYFLOW>
+      <RPY_DYFLOW/>
       <RPY_DYFLOW>
        <LINE>  LOOP AT   g_ti_detalle</LINE>
       </RPY_DYFLOW>
@@ -719,7 +750,7 @@
       </RPY_DYFLOW>
       <RPY_DYFLOW/>
       <RPY_DYFLOW>
-       <LINE>MODULE STATUS_0110.</LINE>
+       <LINE>  MODULE status_0110.</LINE>
       </RPY_DYFLOW>
       <RPY_DYFLOW>
        <LINE>*</LINE>
@@ -740,6 +771,18 @@
       </RPY_DYFLOW>
       <RPY_DYFLOW/>
       <RPY_DYFLOW>
+       <LINE>*    FIELD g_es_ztsd0002-zfactura  MODULE consultar_regis_detalle ON</LINE>
+      </RPY_DYFLOW>
+      <RPY_DYFLOW>
+       <LINE>*    REQUEST.</LINE>
+      </RPY_DYFLOW>
+      <RPY_DYFLOW>
+       <LINE>    FIELD g_es_ztsd0001-zfactura MODULE consultar_regis_detalle ON</LINE>
+      </RPY_DYFLOW>
+      <RPY_DYFLOW>
+       <LINE>    REQUEST.</LINE>
+      </RPY_DYFLOW>
+      <RPY_DYFLOW>
        <LINE>  ENDCHAIN.</LINE>
       </RPY_DYFLOW>
       <RPY_DYFLOW/>
@@ -755,6 +798,9 @@
       </RPY_DYFLOW>
       <RPY_DYFLOW>
        <LINE>      &quot;MODULE leave_dynpro AT EXIT-COMMAND.</LINE>
+      </RPY_DYFLOW>
+      <RPY_DYFLOW>
+       <LINE>      FIELD g_es_detalle-mark.</LINE>
       </RPY_DYFLOW>
       <RPY_DYFLOW>
        <LINE>      FIELD g_es_detalle-zcodpro.</LINE>
@@ -792,9 +838,11 @@
       <RPY_DYFLOW>
        <LINE>  ENDLOOP.</LINE>
       </RPY_DYFLOW>
+      <RPY_DYFLOW/>
       <RPY_DYFLOW>
        <LINE>  MODULE tc_detpro_user_command.</LINE>
       </RPY_DYFLOW>
+      <RPY_DYFLOW/>
       <RPY_DYFLOW>
        <LINE>*&amp;SPWIZARD: MODULE TC_DETPRO_CHANGE_TC_ATTR.</LINE>
       </RPY_DYFLOW>
@@ -803,7 +851,7 @@
       </RPY_DYFLOW>
       <RPY_DYFLOW/>
       <RPY_DYFLOW>
-       <LINE>MODULE USER_COMMAND_0110.</LINE>
+       <LINE>  MODULE user_command_0110.</LINE>
       </RPY_DYFLOW>
      </FLOW_LOGIC>
     </item>
@@ -933,6 +981,24 @@
      <KEY>00I</KEY>
      <ENTRY>I</ENTRY>
      <LENGTH>28</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>MCE</KEY>
+     <ENTRY>Debe ingresar la cedula del cliente</ENTRY>
+     <LENGTH>70</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>MFA</KEY>
+     <ENTRY>Debe ingresar el número de factura</ENTRY>
+     <LENGTH>68</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>MNE</KEY>
+     <ENTRY>Cliente No Existe</ENTRY>
+     <LENGTH>27</LENGTH>
     </item>
     <item>
      <ID>I</ID>
