@@ -33,6 +33,7 @@ CLASS zcl_sd_actualizar IMPLEMENTATION.
       g_es_ztsd0002-zcantidad = g_es_detalle-zcantidad.
       g_es_ztsd0002-zvalor    = g_es_detalle-zvalor.
       g_es_ztsd0002-ztotal    = g_es_detalle-ztotal.
+      g_es_ztsd0002-zfecfac   = g_c_fecfac.
 
       IF  g_es_detalle-zcodpro IS INITIAL OR g_es_ztsd0002-zvalor EQ 0.
       ELSE.

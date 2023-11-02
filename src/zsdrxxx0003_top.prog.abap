@@ -45,12 +45,18 @@ TYPES:
     zsaldo  TYPE   zdesaldo ,     "saldo,
   END OF g_tp_ti_ztsd0005,
 
+  BEGIN OF g_tp_ti_fechafac,
+    zfactura TYPE   zdefactura,  "Factura
+    zfecfac  TYPE   zdefecha,    "Ciudad
+  END OF g_tp_ti_fechafac,
+
   g_tp_tt_ztsd0001   TYPE STANDARD TABLE OF g_tp_ti_ztsd0001,
   g_tp_tt_ztsd0003   TYPE STANDARD TABLE OF g_tp_ti_ztsd0003,
   g_tp_tt_ztsd0004   TYPE STANDARD TABLE OF g_tp_ti_ztsd0004,
   g_tp_tt_ztsd0005   TYPE STANDARD TABLE OF g_tp_ti_ztsd0005,
   g_tp_tt_ztsdciudad TYPE STANDARD TABLE OF g_tp_ti_ztsdciudad,
-  g_tp_tt_detalle    TYPE STANDARD TABLE OF g_tp_ti_detalle.
+  g_tp_tt_detalle    TYPE STANDARD TABLE OF g_tp_ti_detalle,
+  g_tp_tt_fechafac   TYPE STANDARD TABLE OF g_tp_ti_fechafac.
 
 DATA:
   g_es_ztsd0001       TYPE  g_tp_ti_ztsd0001,
@@ -62,6 +68,7 @@ DATA:
   g_es_ztsdciudad     TYPE  g_tp_ti_ztsdciudad,
   g_es_ztsd0002       TYPE  ztsd0002,
   g_es_ztsd0005_act   TYPE  ztsd0005,
+  g_es_fechafac       TYPE  g_tp_ti_fechafac,
   g_ti_ztsd0001       TYPE  g_tp_tt_ztsd0001,
   g_ti_ztsd0003       TYPE  g_tp_tt_ztsd0003,
   g_ti_ztsd0004       TYPE  g_tp_tt_ztsd0004,
@@ -69,16 +76,19 @@ DATA:
   g_ti_ztsdciudad     TYPE  g_tp_tt_ztsdciudad,
   g_ti_detalle        TYPE  g_tp_tt_detalle,
   g_ti_detalle_cop    TYPE  g_tp_tt_detalle,
+  g_ti_fechafac       TYPE  g_tp_tt_fechafac,
   g_ti_lvc_s_fcat     TYPE STANDARD TABLE OF  lvc_s_fcat,
   go_custom_container TYPE REF TO cl_gui_custom_container,  "Contenedor
   obj_alv_grid        TYPE REF TO cl_gui_alv_grid.
 
-DATA: znfactura TYPE zdefactura,
-      zdesdepto TYPE zdedescri,
-      zdciudad  TYPE zdedescri,
-      g_e_saldo TYPE zdevalor,
-      g_e_total TYPE zdevalor,
-      g_f_factu TYPE zdefecha.
+DATA: znfactura      TYPE zdefactura,
+      zdesdepto      TYPE zdedescri,
+      zdciudad       TYPE zdedescri,
+      g_e_saldo      TYPE zdevalor,
+      g_e_total      TYPE zdevalor,
+      g_f_factu      TYPE zdefecha,
+      g_c_fecfac(10) TYPE c.
+
 
 *&SPWIZARD: DECLARATION OF TABLECONTROL 'TC_DETPRO' ITSELF
 CONTROLS: tc_detpro TYPE TABLEVIEW USING SCREEN 0110.

@@ -121,6 +121,12 @@
 *       text
 *----------------------------------------------------------------------*
  MODULE consultar_regis_detalle INPUT.
+
+   DATA:
+     l_c_dia(2)  TYPE c,
+     l_c_mes(2)  TYPE c,
+     l_c_year(4) TYPE c.
+
    IF g_es_ztsd0001-zcedula IS NOT INITIAL.
      SELECT
         zcodpro         "Codigo del producto
@@ -132,7 +138,23 @@
        INTO TABLE g_ti_detalle
        WHERE zfactura EQ  g_es_ztsd0001-zfactura
         AND zcedula EQ g_es_ztsd0001-zcedula.
+     IF sy-subrc EQ 0.
+       SELECT SINGLE zfactura        "Número de factura
+                     zfecfac         "Fecha factura
+         INTO g_es_fechafac
+         FROM ztsd0002
+         WHERE zfactura EQ  g_es_ztsd0001-zfactura
+         AND zcedula EQ g_es_ztsd0001-zcedula.
 
+       g_c_fecfac = g_es_fechafac-zfecfac.
+
+     ELSE.
+       g_es_fechafac-zfecfac = sy-datum.
+     ENDIF.
+     CONCATENATE g_es_fechafac-zfecfac+0(4) ' ' INTO l_c_year."Año
+     CONCATENATE g_es_fechafac-zfecfac+4(2) ' ' INTO l_c_mes. "Mes
+     CONCATENATE g_es_fechafac-zfecfac+6(2) ' ' INTO l_c_dia. "Dia
+     CONCATENATE l_c_year l_c_mes l_c_dia INTO g_c_fecfac.
      LOOP AT g_ti_detalle INTO g_es_detalle.
        "g_e_total = g_e_total + g_es_detalle-ztotal.
      ENDLOOP.
