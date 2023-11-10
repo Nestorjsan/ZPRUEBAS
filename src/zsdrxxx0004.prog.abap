@@ -1,25 +1,23 @@
 *----------------------------------------------------------------------*
 * Información General
 *----------------------------------------------------------------------*
-* Programa     : ZSDRXXX0003
-* Tipo Objeto  : Modulpool - Dynpros
-* Descripción  : Factura detalle del producto
+* Programa     : ZSDRXXX0004
+* Tipo Objeto  : Programa
+* Descripción  : Impresión factura
 * Empresa      : Proyect asociados Sánchez
 * Autor Prog.  : DEVELOPER - Néstor Javier Sánchez Sánchez
-* Fecha Creac. : 30.10.2023
+* Fecha Creac. : 08.11.2023
 *----------------------------------------------------------------------*
 * Ordenes de Transporte   NPLK900083
 * Modulo       : SD
-* Transacción  : ZSD04O
+* Transacción  : ZSD041
 *----------------------------------------------------------------------*
-PROGRAM ZSDRXXX0003.
-TYPE-POOLS: vrm.
-"type-pools: icon.
+REPORT ZSDRXXX0004.
 
-INCLUDE ZSDRXXX0003_TOP.
+INCLUDE ZSDRXXX0004_TOP.
+INCLUDE ZSDRXXX0004_SEL.
+INCLUDE ZSDRXXX0004_FORM.
 
-*&SPWizard: Include inserted by SP Wizard. DO NOT CHANGE THIS LINE!
-INCLUDE ZSDRXXX0003_CLS.
-INCLUDE ZSDRXXX0003_PAI.
-INCLUDE ZSDRXXX0003_PBO .
-INCLUDE ZSDRXXX0003_FORM .
+START-OF-SELECTION.
+
+PERFORM f_consulta_datos.
