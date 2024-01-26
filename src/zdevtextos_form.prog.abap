@@ -4,24 +4,24 @@
 
 FORM f_consulta_texto.
 
-  g_es_texto = pa_tex.
-  CONDENSE g_es_texto.
+  g_c_nomtex = pa_tex.
+  CONDENSE g_c_nomtex.
 
-  SELECT tdname
-     FROM stxh INTO TABLE gti_stxh
-      WHERE tdname = g_es_texto.
+  SELECT SINGLE tdname INTO g_c_tdname
+     FROM stxh
+      WHERE tdname = pa_tex.
   IF sy-subrc EQ 0.
 
     CALL FUNCTION 'READ_TEXT'
       EXPORTING
         id                      = 'ST'             "ID del texto
         language                = 'S'              "Idioma
-        name                    = g_es_texto       "Texto
+        name                    = g_c_nomtex       "Texto
         object                  = 'TEXT'           "Esto es constante
       IMPORTING
-        header                  = ls_header
+        header                  = g_es_header
       TABLES
-        lines                   = gti_lineas
+        lines                   = g_ti_lineas
       EXCEPTIONS
         id                      = 1
         language                = 2
@@ -32,62 +32,67 @@ FORM f_consulta_texto.
         wrong_access_to_archive = 7
         OTHERS                  = 8.
 
-    ld_fila = 1.
-    LOOP AT gti_lineas INTO gwa_lineas.
+    g_d_fila = 1.
+    LOOP AT g_ti_lineas INTO g_c_lineas.
 
-      CASE ld_fila.
+      CASE g_d_fila.
 
         WHEN 1.
-          gv_texto1 = gwa_lineas-tdline.
+          g_c_texto1 = g_c_lineas-tdline.
         WHEN 2.
-          gv_texto2 = gwa_lineas-tdline.
+          g_c_texto2 = g_c_lineas-tdline.
         WHEN 3.
-          gv_texto3 = gwa_lineas-tdline.
+          g_c_texto3 = g_c_lineas-tdline.
         WHEN 4.
-          gv_texto4 = gwa_lineas-tdline.
+          g_c_texto4 = g_c_lineas-tdline.
         WHEN 5.
-          gv_texto5 = gwa_lineas-tdline.
+          g_c_texto5 = g_c_lineas-tdline.
         WHEN 6.
-          gv_texto6 = gwa_lineas-tdline.
+          g_c_texto6 = g_c_lineas-tdline.
         WHEN 7.
-          gv_texto7 = gwa_lineas-tdline.
+          g_c_texto7 = g_c_lineas-tdline.
         WHEN 8.
-          gv_texto8 = gwa_lineas-tdline.
+          g_c_texto8 = g_c_lineas-tdline.
         WHEN 9.
-          gv_texto9 = gwa_lineas-tdline.
+          g_c_texto9 = g_c_lineas-tdline.
         WHEN 10.
-          gv_texto10 = gwa_lineas-tdline.
+          g_c_texto10 = g_c_lineas-tdline.
       ENDCASE.
 
-      ld_fila = ld_fila + 1.
+      g_d_fila = g_d_fila + 1.
 
     ENDLOOP.
 
-    CONCATENATE gv_texto1 ' ' gv_texto2 ' ' gv_texto3 ' ' gv_texto4 ' ' gv_texto5 ' '
-                gv_texto6 ' ' gv_texto7 ' ' gv_texto8 ' ' gv_texto9 ' ' gv_texto10 INTO gv_texto.
-    REPLACE '<N>' WITH space INTO gv_texto.
-    REPLACE '</>' WITH space INTO gv_texto.
-    CONDENSE gv_texto.
+    CONCATENATE g_c_texto1 ' ' g_c_texto2 ' ' g_c_texto3 ' ' g_c_texto4 ' ' g_c_texto5 ' '
+                g_c_texto6 ' ' g_c_texto7 ' ' g_c_texto8 ' ' g_c_texto9 ' ' g_c_texto10 INTO g_c_texto.
+    REPLACE '<N>' WITH space INTO g_c_texto.
+    REPLACE '</>' WITH space INTO g_c_texto.
+    CONDENSE g_c_texto.
 
-    SELECT name low
+    SELECT SINGLE low INTO g_c_low
            FROM tvarvc
-      INTO TABLE gti_parametros
       WHERE name = text-003.
-
-    READ TABLE gti_parametros INTO ges_parametros INDEX 1.
-
-    CONCATENATE '1.-' gv_texto INTO ges_pos_01.
-    CONDENSE ges_pos_01.
-    g_es_contador = strlen( ges_pos_01 ).
-    g_es_texnum = g_es_contador.
-    IF g_es_contador > ges_parametros-low.
-      CONCATENATE 'El texto ' g_es_texto ' sobrepasa la cantidad de' ges_parametros-low  ' caracteres permitidos, tiene ' g_es_texnum INTO lv_message SEPARATED BY space.
+    IF sy-subrc EQ 0.
+      CONCATENATE 'N.-' g_c_texto INTO g_c_pos_01.
+      CONDENSE g_c_pos_01.
+      g_d_contador = strlen( g_c_pos_01 ).
+      g_c_texnum = g_d_contador.
+      CONDENSE g_c_texnum .
+      IF g_d_contador > g_c_low.
+        CONCATENATE 'El texto ' g_c_nomtex ' Sobrepasa la cantidad de ' g_c_low ' caracteres permitidos, tiene ' g_c_texnum ' => '  g_c_pos_01 INTO g_c_message SEPARATED BY space.
+      ELSE.
+        CONCATENATE 'El texto ' g_c_nomtex ' No excede la cantidad de ' g_c_low ' caracteres permitidos => '  g_c_pos_01 INTO  g_c_message SEPARATED BY space.
+      ENDIF.
+      MESSAGE g_c_message TYPE 'I'.
     ELSE.
-      CONCATENATE 'El texto ' g_es_texto ' no excede la cantidad de ' ges_parametros-low   ' caracteres permitidos' INTO lv_message SEPARATED BY space.
+      CONCATENATE 'La variable ' TEXT-003 ' No está creada en la tabla de parametros TVARVC' INTO  g_c_message SEPARATED BY space.
+      MESSAGE g_c_message TYPE 'I'.
     ENDIF.
-    MESSAGE lv_message TYPE 'I'.
   ELSE.
-    CONCATENATE 'El texto ' g_es_texto ' No Está Creado' INTO lv_message SEPARATED BY space.
-     MESSAGE lv_message TYPE 'I'.
+    CONCATENATE 'El texto ' g_c_nomtex ' No Está Creado' INTO g_c_message SEPARATED BY space.
+    MESSAGE g_c_message TYPE 'I'.
   ENDIF.
+  CLEAR: g_c_message, g_c_texto1,  g_c_texto2,  g_c_texto3,  g_c_texto4,  g_c_texto5,
+         g_c_texto6,  g_c_texto7 , g_c_texto8 , g_c_texto9 , g_c_texto10, g_c_texto,
+         g_c_pos_01.
 ENDFORM.

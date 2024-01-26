@@ -8,14 +8,14 @@ REPORT ZDEVTEXTOS.
 *&---------------------------------------------------------------------*
 * Información General
 *----------------------------------------------------------------------*
-* Programa     : ZSDRXXX0001
+* Programa     : ZDEVTEXTOS
 * Tipo Objeto  : REPORT
 * Descripción  : Cantidad de caracteres de un texto
-* Empresa      : Almacenes La 14 S.A.
+* Empresa      :
 * Autor Prog.  : NSANCHEZ - Néstor Javier Sánchez Sánchez
-* Fecha Creac. : 11.10.2023
+* Fecha Creac. : 11.03.2022
 *----------------------------------------------------------------------*
-* Ordenes de Transporte   NPLK900097
+* Ordenes de Transporte
 *----------------------------------------------------------------------*
 
 INCLUDE ZDEVTEXTOS_TOP.
