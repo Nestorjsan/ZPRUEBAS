@@ -73,11 +73,11 @@ DATA: gti_adr2 TYPE  gtt_adr2,
 *Adicionar datos a la tabla interna
 
 gwa_adr2-addrnumber = '2024'.
-gwa_adr2-tel_number = '032 3921955'.
+gwa_adr2-tel_number = ' '.
 APPEND gwa_adr2 TO gti_adr2.
 
 gwa_adr2-addrnumber = '2024'.
-gwa_adr2-tel_number = '3014478838'.
+gwa_adr2-tel_number = '0324478838'.
 APPEND gwa_adr2 TO gti_adr2.
 
 *Adicionar datos correo electronico
@@ -108,11 +108,20 @@ APPEND gwa_adr3 TO gti_adr3.
 *ENDIF.
 
 *Telefono SD
-DATA lc_tel(30) TYPE C.
-READ TABLE gti_adr2 INTO gwa_adr2 INDEX 1.
-REPLACE TEXT-032 IN gwa_adr2-tel_number WITH space.
+*DATA lc_tel(30) TYPE C.
+*READ TABLE gti_adr2 INTO gwa_adr2 INDEX 1.
+*REPLACE TEXT-032 IN gwa_adr2-tel_number WITH space.
+*CONDENSE gwa_adr2-tel_number .
+*"CONCATENATE gwa_adr2-tel_number INTO lc_tel.
+
+LOOP AT  gti_adr2 INTO gwa_adr2.
+  IF gwa_adr2-tel_number = ' '.
+  ELSE.
+    REPLACE TEXT-032 IN gwa_adr2-tel_number WITH space.
+    EXIT.
+  ENDIF.
+ENDLOOP.
 CONDENSE gwa_adr2-tel_number .
-"CONCATENATE gwa_adr2-tel_number INTO lc_tel.
 cde_telpercon = gwa_adr2-tel_number.
 
 READ TABLE gti_adr6 INTO gwa_adr6
