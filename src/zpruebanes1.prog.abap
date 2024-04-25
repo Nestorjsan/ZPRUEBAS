@@ -1,8 +1,15 @@
 *&---------------------------------------------------------------------*
-*& Report ZPRUEBANES1
-*&---------------------------------------------------------------------*
-*&
-*&---------------------------------------------------------------------*
+* Información General
+*----------------------------------------------------------------------*
+* Programa     : ZPRUEBANES
+* Tipo Objeto  : REPORT
+* Descripción  : Pruebas de desarrollo
+* Empresa      : Empresa 01
+* Autor Prog.  : DEVELOPER- Néstor Javier Sánchez Sánchez
+* Fecha Creac. : 22.03.2023
+*----------------------------------------------------------------------*
+* Ordenes de Transporte
+*----------------------------------------------------------------------*
 REPORT zpruebanes1.
 
 DATA: gti_lineas      TYPE STANDARD TABLE OF tline,

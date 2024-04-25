@@ -1,9 +1,26 @@
 *&---------------------------------------------------------------------*
-*& Report ZPRUEBANES
-*&---------------------------------------------------------------------*
-*&Pruebas Desarrollo
-*&---------------------------------------------------------------------*
+* Información General
+*----------------------------------------------------------------------*
+* Programa     : ZPRUEBANES
+* Tipo Objeto  : REPORT
+* Descripción  : Pruebas de desarrollo
+* Empresa      : Empresa 01
+* Autor Prog.  : DEVELOPER- Néstor Javier Sánchez Sánchez
+* Fecha Creac. : 22.03.2023
+*----------------------------------------------------------------------*
+* Ordenes de Transporte NPLK900093 - NPLK900101
+*----------------------------------------------------------------------*
 REPORT zpruebanes.
+
+INCLUDE <symbol>.
+
+INCLUDE <icon>.
+
+WRITE: /  'Phone Symbol:', sym_phone AS SYMBOL.
+
+SKIP.
+
+WRITE: /  'Alarm Icon:   ', icon_alarm AS ICON.
 
 DATA: gwa_fecha          TYPE d,
       gwa_forfec(25)     TYPE c,
