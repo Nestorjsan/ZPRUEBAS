@@ -3,11 +3,8 @@
 *&---------------------------------------------------------------------*
 FORM f_consulta_datos.
 
-  "Tabla de parametros
-  SELECT name low
-         FROM tvarvc
-    INTO TABLE gti_parametros
-    WHERE name LIKE '%ZFELA14%'.
+  "Tabla de parametros Notas debito y credito
+
 
   ges_segmento_enc-nom_seg = 'ENC'.
   ges_segmento_enc-tip_fac = pa_doc.
@@ -23,23 +20,38 @@ FORM f_consulta_datos.
   ges_segmento_ref-num_docref = '1354021'.
   APPEND ges_segmento_ref TO gti_segmento_ref.
 
+  PERFORM f_ajuste_segmento_cdn_3 CHANGING gti_segmento_enc
+                                           gti_segmento_cdn
+                                           gti_segmento_ref.
 
-  READ TABLE gti_parametros  INTO gwa_parametros
+
+ENDFORM.
+
+FORM f_ajuste_segmento_cdn_3 CHANGING p_ti_segmento_enc  TYPE  gtt_segmento_enc
+                                      p_ti_segmento_cdn  TYPE  gtt_segmento_cdn
+                                      p_ti_segmento_ref  TYPE  gtt_segmento_ref.
+
+  SELECT name low
+         FROM tvarvc
+    INTO TABLE gti_parametros_not
+    WHERE name EQ text-031 " LIKE '%ZFELA14%'.
+       OR name EQ text-032.
+
+  READ TABLE gti_parametros_not  INTO gwa_parametros
               WITH KEY name = TEXT-031. "(zfela14_tipnota)  91-92
 
   SELECT sign opti low high
   INTO TABLE gvr_tipnota
   FROM tvarvc
   WHERE name = gwa_parametros-name.
-  IF gvr_tipnota[] IS INITIAL.
-  ELSE.
+  IF gvr_tipnota[] IS NOT INITIAL.
 
-    READ TABLE gti_segmento_enc ASSIGNING <lfs_seg_enc>
+    READ TABLE p_ti_segmento_enc ASSIGNING <lfs_seg_enc>
              WITH KEY nom_seg = 'ENC'.
     IF  sy-subrc EQ 0.
       IF <lfs_seg_enc>-tip_fac IN gvr_tipnota[].
 
-        READ TABLE gti_parametros  INTO gwa_parametros
+        READ TABLE gti_parametros_not  INTO gwa_parametros
            WITH KEY name = TEXT-032. "(zfela14_tipope)  20-30
 
 
@@ -47,15 +59,14 @@ FORM f_consulta_datos.
         INTO TABLE gvr_tipope
         FROM tvarvc
         WHERE name = gwa_parametros-name.
-        IF gvr_tipope[] IS INITIAL.
-        ELSE.
+        IF gvr_tipope[] IS NOT INITIAL.
           IF <lfs_seg_enc>-ind_top IN gvr_tipope[].
 
-            READ TABLE gti_segmento_cdn ASSIGNING <lfs_seg_cdn>
+            READ TABLE p_ti_segmento_cdn ASSIGNING <lfs_seg_cdn>
             WITH KEY nom_seg = 'CDN'.
             IF  sy-subrc EQ 0.
 
-              READ TABLE gti_segmento_ref INTO ges_segmento_ref
+              READ TABLE p_ti_segmento_ref INTO ges_segmento_ref
                WITH KEY nom_seg = 'REF'.
               IF sy-subrc EQ 0.
                 <lfs_seg_cdn>-sec_factor =  ges_segmento_ref-num_docref .
@@ -69,7 +80,9 @@ FORM f_consulta_datos.
     ENDIF.
   ENDIF.
 
-  READ TABLE gti_segmento_cdn INTO ges_segmento_cdn
+  CLEAR gti_parametros_not.
+
+  READ TABLE p_ti_segmento_cdn INTO ges_segmento_cdn
         WITH KEY nom_seg = 'CDN'.
 
   CONDENSE: ges_segmento_cdn-cod_tipcon, ges_segmento_cdn-des_natucor, ges_segmento_cdn-sec_factor.
@@ -84,4 +97,5 @@ FORM f_consulta_datos.
   CONDENSE lc_variable.
 
   WRITE: / lc_variable.
+
 ENDFORM.

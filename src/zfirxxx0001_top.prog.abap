@@ -77,10 +77,10 @@ TYPES: gtt_segmento_enc TYPE STANDARD TABLE OF  gtp_segmento_enc,
        gtt_segmento_cdn TYPE STANDARD TABLE OF  gtp_segmento_cdn,
        gtt_parametros   TYPE STANDARD TABLE OF  gty_parametros.
 
-DATA: gti_segmento_enc TYPE STANDARD TABLE OF  gtp_segmento_enc,
-      gti_segmento_ref TYPE STANDARD TABLE OF  gtp_segmento_ref,
-      gti_segmento_cdn TYPE STANDARD TABLE OF  gtp_segmento_cdn,
-      gti_parametros   TYPE gtt_parametros.
+DATA: gti_segmento_enc   TYPE STANDARD TABLE OF  gtp_segmento_enc,
+      gti_segmento_ref   TYPE STANDARD TABLE OF  gtp_segmento_ref,
+      gti_segmento_cdn   TYPE STANDARD TABLE OF  gtp_segmento_cdn,
+      gti_parametros_not TYPE gtt_parametros.
 
 *------------------------------------------------------------------------*
 * Declaración de Tablas de Rangos                                        *
