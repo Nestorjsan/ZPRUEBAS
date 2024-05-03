@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_FUGR" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <AREAT>Grupo de Funciones Factura Electronica</AREAT>
+   <INCLUDES>
+    <SOBJ_NAME>LZFI_FG_FACELEF01</SOBJ_NAME>
+    <SOBJ_NAME>LZFI_FG_FACELETOP</SOBJ_NAME>
+    <SOBJ_NAME>SAPLZFI_FG_FACELE</SOBJ_NAME>
+   </INCLUDES>
+   <FUNCTIONS>
+    <item>
+     <FUNCNAME>ZFI_FM_FACELE</FUNCNAME>
+     <SHORT_TEXT>Modulo de Funciones Factura Electronica</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>TIP_DOCU</PARAMETER>
+       <REFERENCE>X</REFERENCE>
+       <TYP>C</TYP>
+      </RSIMP>
+     </IMPORT>
+     <EXPORT>
+      <RSEXP>
+       <PARAMETER>NUM_FAC</PARAMETER>
+       <REFERENCE>X</REFERENCE>
+       <TYP>C</TYP>
+      </RSEXP>
+     </EXPORT>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>TIP_DOCU</PARAMETER>
+       <KIND>P</KIND>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>NUM_FAC</PARAMETER>
+       <KIND>P</KIND>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+   </FUNCTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>
