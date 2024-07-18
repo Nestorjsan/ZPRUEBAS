@@ -12,4 +12,6 @@ INCLUDE zfirxxx0001_form.
 
 START-OF-SELECTION.
 
-PERFORM f_consulta_datos.
+PERFORM f_mapear_info_segmentos CHANGING gti_segmento_enc
+                                         gti_segmento_cdn
+                                         gti_segmento_ref.

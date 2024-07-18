@@ -29,6 +29,24 @@
      <LENGTH>24</LENGTH>
     </item>
     <item>
+     <ID>I</ID>
+     <KEY>CDN</KEY>
+     <ENTRY>CDN</ENTRY>
+     <LENGTH>13</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>ENC</KEY>
+     <ENTRY>ENC</ENTRY>
+     <LENGTH>13</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>REF</KEY>
+     <ENTRY>REF</ENTRY>
+     <LENGTH>13</LENGTH>
+    </item>
+    <item>
      <ID>R</ID>
      <ENTRY>Ingreso Número de Factura Segmento CDN</ENTRY>
      <LENGTH>38</LENGTH>
